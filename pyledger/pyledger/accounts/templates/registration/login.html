@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>PyLedger</title>
+  </head>
+  <body>
+    <form class="" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button type="submit" name="button">Submit</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'signup' %}">Click here</a> to register</p>
+  </body>
+</html>

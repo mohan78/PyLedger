@@ -1,0 +1,32 @@
+{% extends 'registration/authbase.html' %}
+{% block body %}
+<form class="" action="{% url 'signup' %}" method="post">
+  {% csrf_token %}
+  <div class="">
+    <label for="username">Username</label>
+    <input type="text" name="username" value="">
+  </div>
+  <div class="">
+    <label for="password">Password</label>
+    <input type="password" name="password" value="">
+  </div>
+  <div class="">
+    <label for="confirmpassword">Confirm Password</label>
+    <input type="password" name="confirmpassword" value="">
+  </div>
+  <div class="">
+    <label for="email">Email</label>
+    <input type="text" name="email" value="">
+  </div>
+  <div class="">
+    <label for="firstname">First name</label>
+    <input type="text" name="firstname" value="">
+  </div>
+  <div class="">
+    <label for="lastname">Last name</label>
+    <input type="text" name="lastname" value="">
+  </div>
+  <p>By signing up, you agree to our terms and conditions which will be updated later.</p>
+  <button type="submit" name="button">Submit</button>
+</form>
+{% endblock %}
