@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Expenses
+from datetime import datetime
 
 def index(request):
     user = request.user
-    context = {'username':user.username}
+    month = datetime.now().strftime('%m')
+    this_month_expenses = Expenses.objects.filter(datespent__month=month)
+    context = {'username':user.username,'expenses':this_month_expenses}
     return render(request, 'home/index.html',context)
 
 def addexpense(request):
@@ -17,6 +20,7 @@ def addexpense(request):
         amount = request.POST.get('amount')
         modeofpayment = request.POST.get('modeofpayment')
         datespent = request.POST.get('datespent')
+        print(category)
         if int(amount) < 0:
             messages.add_message(request, messages.INFO, 'Please enter an valid amount')
             return redirect('addexpense')

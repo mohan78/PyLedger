@@ -15,7 +15,7 @@
     <div class="">
       <div class="">
         <label for="category">Category</label>
-        <select class="" name="category" id="category">
+        <select name="category" id="category">
           <option value="Food">Food</option>
           <option value="Fuel">Fuel</option>
           <option value="Shopping">Shopping</option>
@@ -23,9 +23,7 @@
           <option value="Other">Other</option>
         </select>
       </div>
-      <div class="" id="otherinput" style="display:none">
-        <label for="category">if other, please specify:</label>
-        <input type="text" name="category" value="">
+      <div class="" id="otherinput">
         <p id="test"></p>
       </div>
     </div>
@@ -49,6 +47,7 @@
     </div>
     <button type="submit" name="button">Submit</button>
   </form>
+  <p><a href="{% url 'index' %}">Home</a></p>
 </div>
 {% endblock %}
 {% block script %}
@@ -56,10 +55,10 @@
   $('#category').on('change',function(){
     var category_val = $('#category').val();
     if(category_val == 'Other') {
-      $('#otherinput').show();
+      $('#otherinput').html('<label for="category">if other, please specify:</label><input type="text" name="category" value="">');
     }
     else {
-      $('#otherinput').hide();
+      $('#otherinput').html();
     }
   })
 </script>

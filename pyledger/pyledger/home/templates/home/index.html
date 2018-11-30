@@ -5,8 +5,30 @@
     <title>PyLedger</title>
   </head>
   <body>
-    <a href="{% url 'addexpense' %}">Add expense</a>
+    <p><a href="{% url 'addexpense' %}">Add expense</a></p>
+    <p><a href="">Create split group</a></p>
+    <p><a href="">Your split groups</a></p>
     <br>
+    <table>
+      <thead>
+        <th>Spent at</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Amount</th>
+      </thead>
+      <tbody>
+        {% for expense in expenses %}
+        <tr>
+          <td>{{expense.spentat}}</td>
+          <td>{{expense.category}}</td>
+          <td>{{expense.datespent}}</td>
+          <td>{{expense.amount}}</td>
+        </tr> 
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <p><a href="{% url 'logout' %}">Logout</a></p> 
   </body>
-  <a href="{% url 'logout' %}">Logout</a>
+  
 </html>
