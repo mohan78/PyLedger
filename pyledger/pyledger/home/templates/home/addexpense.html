@@ -1,7 +1,13 @@
 {% extends 'home/base.html' %}
 {% block body %}
 <div class="">
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+  {% endif %}
   <form class="" action="{% url 'addexpense' %}" method="post">
+    {% csrf_token %}
     <div class="">
       <label for="datespent">Date</label>
       <input type="text" name="datespent" value="">
@@ -32,7 +38,7 @@
       <input type="text" name="amount" value="">
     </div>
     <div class="">
-      <label for="modeofpayment">Spent at</label>
+      <label for="modeofpayment">Mode of Payment</label>
       <select class="" name="modeofpayment" id="modeofpayment">
         <option value="Cash">Cash</option>
         <option value="Debit Card">Debit Card</option>
@@ -40,10 +46,6 @@
         <option value="Net Banking">Net Banking</option>
         <option value="E-Wallets">E-Wallets</option>
       </select>
-    </div>
-    <div class="">
-      <label for="amount">Amount</label>
-      <input type="text" name="amount" value="">
     </div>
     <button type="submit" name="button">Submit</button>
   </form>
