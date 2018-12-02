@@ -1,10 +1,12 @@
 {% extends 'home/base.html' %}
 
 {% block body %}
-<form action="" method="POST">
+<form action="{% url 'createsplit' %}" method="POST">
+    {% csrf_token %}
     <div>
         <label for="groupname">Group name</label>
         <input type="text" name="groupname">
     </div>
+    <button type="submit">Submit</button>
 </form>
 {% endblock %}

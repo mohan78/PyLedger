@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+{% block body %}
+{{id}}
+{% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+{% endif %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>Add members to the group:</p>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username">
+    </div>
+    <button type="submit">Submit</button>
+</form>
+<p>Members:</p>
+<ul>
+    {% for member in members %}
+        <input type="text" value="{{member.username}}" id="member" hidden> <li>{{member.username}} ( {{member.first_name}} {{member.last_name}} )</li><button id="deletemember">Delete</button>
+    {% endfor %}
+</ul>
+{% endblock %}
+{% block script %}
+<script>
+    $("[id='deletemember']").on('click',function(){
+        var member = $(this).find('#member').closest().val();
+        alert(member);
+    })
+</script>
+{% endblock %}
