@@ -1,0 +1,3 @@
+{% for member in members %}
+  <li><input type="text" value="{{member.username}}" name="member" id="member" hidden> {{member.username}} ( {{member.first_name}} {{member.last_name}} )<button id="deletemember">Delete</button></li>
+{% endfor %}

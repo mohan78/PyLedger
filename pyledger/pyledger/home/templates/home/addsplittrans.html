@@ -1,0 +1,55 @@
+{% extends 'home/base.html' %}
+{% block body %}
+{% if messages %}
+  {% for message in messages %}
+    {{message}}
+  {% endfor %}
+{% endif %}
+<div>
+  <p>Your ledger: </p>
+  <p>Your total spendings: {{amount_spent}}</p>
+  <p>Your payables: {{amount_payable_others}}</p>
+  <p>Your receivables: {{amount_receivables}}</p>
+</div>
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <p for="paidby">Paid by: {{request.user.username}}</p>
+  <div class="">
+    <label for="purpose">Purpose</label>
+    <input type="text" name="purpose" value="">
+  </div>
+  <div class="">
+    <label for="amount">Amount</label>
+    <input type="text" name="amount" value="">
+  </div>
+  <div class="">
+    <p>Split equally between</p>
+      {% for member in members %}
+      <div>
+        <label for="{{member.member}}">{{member.member}}</label>
+        <input type="checkbox" value="{{member.member}}" name="membername">
+      </div>
+      {% endfor %}
+  <button type="submit">Add transaction</button>
+</form>
+<table>
+  <thead>
+    <th>Date spent</th>
+    <th>Purpose</th>
+    <th>Spent by</th>
+    <th>Spent for</th>
+    <th>Amount</th>
+  </thead>
+  <tbody>
+    {% for splittransaction in splittransactions %}
+      <tr>
+        <td>{{splittransaction.datespent}}</td>
+        <td>{{splittransaction.spentat}}</td>
+        <td>{{splittransaction.spentby}}</td>
+        <td>{{splittransaction.spentfor}}</td>
+        <td>{{splittransaction.amount}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

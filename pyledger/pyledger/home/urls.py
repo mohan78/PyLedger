@@ -6,5 +6,7 @@ urlpatterns = [
     path('addexpense/',views.addexpense, name="addexpense"),
     path('split/create/', views.createsplit, name="createsplit"),
     path('splits/manage/<int:pk>', views.managesplits, name="managesplits"),
-    path('splits/addtransaction',views.addsplittrans, name="addsplittrans"),
+    path('splits/transaction/add/<int:pk>',views.addsplittrans, name="addsplittrans"),
+    
+    path('splits/deletemember',views.deletemember, name="deletemember")
 ]

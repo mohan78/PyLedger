@@ -11,22 +11,33 @@
     <p>Add members to the group:</p>
     <div>
         <label for="username">Username:</label>
-        <input type="text" name="username">
+        <input type="text" name="username" required>
     </div>
     <button type="submit">Submit</button>
 </form>
 <p>Members:</p>
-<ul>
+<ul id="members_list">
     {% for member in members %}
-        <input type="text" value="{{member.username}}" id="member" hidden> <li>{{member.username}} ( {{member.first_name}} {{member.last_name}} )</li><button id="deletemember">Delete</button>
+        <li><input type="text" value="{{member.username}}" name="member" id="member" hidden> {{member.username}} ( {{member.first_name}} {{member.last_name}} )<button id="deletemember">Delete</button></li>
     {% endfor %}
 </ul>
+<p><a href="{% url 'addsplittrans' id %}">Add group transaction</a></p>
 {% endblock %}
 {% block script %}
 <script>
     $("[id='deletemember']").on('click',function(){
-        var member = $(this).find('#member').closest().val();
-        alert(member);
+        var member = $(this).closest('li').find('input').val();
+        $.ajax({
+          url: '{% url 'deletemember' %}',
+          method: 'GET',
+          data: {
+            'username': member,
+            'splitid': {{id}},
+          },
+          success: function(data){
+            $('#members_list').html(data);
+          }
+        })
     })
 </script>
 {% endblock %}

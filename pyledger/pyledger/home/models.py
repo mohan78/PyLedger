@@ -23,8 +23,8 @@ class Splitmembers(models.Model):
 
 class Splittransactions(models.Model):
     splitid = models.ForeignKey(Splits, on_delete=models.CASCADE, related_name="split_transactions")
-    spentby = models.ForeignKey(Splits, on_delete=models.CASCADE, related_name="split_spentby")
+    spentby = models.ForeignKey(User, on_delete=models.CASCADE, related_name="split_spentby")
     amount = models.IntegerField()
-    spentfor = models.ForeignKey(Splits, on_delete=models.CASCADE, related_name="split_spentfor")
+    spentfor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="split_spentfor")
     datespent = models.DateField()
     spentat = models.TextField()
