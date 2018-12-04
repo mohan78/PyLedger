@@ -1,15 +1,28 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>PyLedger</title>
-  </head>
-  <body>
-    <form class="" action="{% url 'login' %}" method="post">
-      {% csrf_token %}
-      {{form.as_p}}
-      <button type="submit" name="button">Submit</button>
-    </form>
-    <p>Don't have an account? <a href="{% url 'signup' %}">Click here</a> to register</p>
-  </body>
-</html>
+{% extends 'registration/authbase.html' %}
+{% block body %}
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <h4>PyLedger Login</h4>
+    </div>
+    <div class="card-body">
+      <form class="" action="{% url 'login' %}" method="post" id="loginform">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit" name="button">Submit</button>
+      </form>
+    </div>
+    <div class="card-footer">
+      <p>Don't have an account?</p>
+      <h6><a href="{% url 'signup' %}">Click here</a> to register</h6>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#loginform input').addClass('form-control');
+  })
+</script>
+{% endblock %}

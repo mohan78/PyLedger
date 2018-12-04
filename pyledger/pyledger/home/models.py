@@ -28,3 +28,4 @@ class Splittransactions(models.Model):
     spentfor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="split_spentfor")
     datespent = models.DateField()
     spentat = models.TextField()
+    mode = models.CharField(max_length=1)

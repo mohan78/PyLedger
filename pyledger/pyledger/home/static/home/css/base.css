@@ -1,0 +1,47 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.navbar ul {
+    padding: 0 20px;
+}
+
+.navbar ul li {
+    padding-right: 15px; 
+}
+
+#index h4 {
+    padding: 20px 0;
+}
+
+#submitexpense {
+    margin: 10px 15px;
+}
+
+#addexpense h4 {
+    padding: 10px 15px;
+}
+
+
+#createsplit h4 {
+    padding: 0 15px;
+}
+
+#createsplit ul li {
+    padding: 5px 20px;
+}
+
+#addmemberform button {
+    margin: 20px 0px;
+    padding: 5px;
+}
+
+#managesplits ul li {
+    padding: 5px 10px;
+}
+
+#deletemember {
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+}

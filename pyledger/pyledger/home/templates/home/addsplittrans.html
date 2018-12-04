@@ -5,51 +5,79 @@
     {{message}}
   {% endfor %}
 {% endif %}
-<div>
+<div class="container-fluid">
   <p>Your ledger: </p>
-  <p>Your total spendings: {{amount_spent}}</p>
-  <p>Your payables: {{amount_payable_others}}</p>
-  <p>Your receivables: {{amount_receivables}}</p>
-</div>
-<form class="" action="" method="post">
-  {% csrf_token %}
-  <p for="paidby">Paid by: {{request.user.username}}</p>
-  <div class="">
-    <label for="purpose">Purpose</label>
-    <input type="text" name="purpose" value="">
-  </div>
-  <div class="">
-    <label for="amount">Amount</label>
-    <input type="text" name="amount" value="">
-  </div>
-  <div class="">
-    <p>Split equally between</p>
-      {% for member in members %}
-      <div>
-        <label for="{{member.member}}">{{member.member}}</label>
-        <input type="checkbox" value="{{member.member}}" name="membername">
-      </div>
+  <p>Your total spendings: {{totalspendings}}</p>
+  <table class="table table-bordered table-hover" style="max-width: 400px">
+    <thead>
+      <th>Member</th>
+      <th>Pay / Receive</th>
+    </thead>
+    <tbody>
+      {% for key,value in amount.items %}
+        <tr>
+          <td>{{key}}</td>
+          {% load mathfilters %}
+          {% if value < 0 %}
+            <td style="color: red">{{value|abs}}</td>
+          {% else %}
+            <td style="color:green">{{value}}</td>
+          {% endif %}
+        </tr>
       {% endfor %}
-  <button type="submit">Add transaction</button>
-</form>
-<table>
-  <thead>
-    <th>Date spent</th>
-    <th>Purpose</th>
-    <th>Spent by</th>
-    <th>Spent for</th>
-    <th>Amount</th>
-  </thead>
-  <tbody>
-    {% for splittransaction in splittransactions %}
-      <tr>
-        <td>{{splittransaction.datespent}}</td>
-        <td>{{splittransaction.spentat}}</td>
-        <td>{{splittransaction.spentby}}</td>
-        <td>{{splittransaction.spentfor}}</td>
-        <td>{{splittransaction.amount}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <p><span style="color:red">Red</span>: You have to pay</p>
+  <p><span style="color:green">Green</span> You will receive</p>
+  <hr>
+  <a href="{% url 'managesplits' id %}"><i class="fas fa-arrow-circle-left fa-2x"></i>Manage group</a>
+  <h4>Add transaction:</h4>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    <div class="form-group row" style="margin:0">
+      <label for="purpose" class="col-form-label">Purpose</label>
+      <div class="col-lg-4">
+        <input type="text" name="purpose" value="" class="form-control">
+      </div>
+    </div>
+    <div class="form-group row" style="margin:0">
+        <label for="amount" class="col-form-label">Amount</label>
+        <div class="col-lg-2">
+          <input type="text" name="amount" value="" class="form-control" placeholder="Rs.">
+        </div>
+      </div>
+    <div class="">
+      <p>Split equally between</p>
+        {% for member in members %}
+        <div class="form-check form-check-inline">
+          <label for="{{member.member}}" class="form-check-input">{{member.member}}</label>
+          <input type="checkbox" class="form-check-label" value="{{member.member}}" name="membername">
+        </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+    
+  </form>
+  <table class="table table-bordered">
+    <thead>
+      <th>Date spent</th>
+      <th>Purpose</th>
+      <th>Spent by</th>
+      <th>Spent for</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for splittransaction in splittransactions %}
+        <tr>
+          <td>{{splittransaction.datespent}}</td>
+          <td>{{splittransaction.spentat}}</td>
+          <td>{{splittransaction.spentby}}</td>
+          <td>{{splittransaction.spentfor}}</td>
+          <td>{{splittransaction.amount}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

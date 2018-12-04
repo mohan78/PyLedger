@@ -1,0 +1,33 @@
+body {
+  background: linear-gradient(#5499C7,#2874A6);
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+}
+
+.card {
+  max-width: 25rem;
+  margin: 70px auto;
+  font-family: 'Lato', sans-serif;
+  box-shadow: 2px 5px 20px #1A5276;
+}
+
+.card-header {
+  color: #1F618D;
+}
+
+.card-body ul {
+  list-style-type: none;
+  padding:10px 0px;
+  font-size: 12px;
+  color: crimson;
+}
+
+.card-footer p {
+  font-size: 13px;
+}
+
+.card-footer a:hover {
+  text-decoration: none;
+  font-weight: bold;;
+}

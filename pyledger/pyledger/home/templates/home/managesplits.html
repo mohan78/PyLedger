@@ -1,43 +1,53 @@
 {% extends 'home/base.html' %}
 {% block body %}
-{{id}}
-{% if messages %}
+<div class="container-fluid" id="managesplits">
+    {% if messages %}
     {% for message in messages %}
-        <p>{{message}}</p>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     {% endfor %}
-{% endif %}
-<form action="" method="POST">
-    {% csrf_token %}
-    <p>Add members to the group:</p>
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-    </div>
-    <button type="submit">Submit</button>
-</form>
-<p>Members:</p>
-<ul id="members_list">
-    {% for member in members %}
-        <li><input type="text" value="{{member.username}}" name="member" id="member" hidden> {{member.username}} ( {{member.first_name}} {{member.last_name}} )<button id="deletemember">Delete</button></li>
-    {% endfor %}
-</ul>
-<p><a href="{% url 'addsplittrans' id %}">Add group transaction</a></p>
-{% endblock %}
-{% block script %}
-<script>
-    $("[id='deletemember']").on('click',function(){
-        var member = $(this).closest('li').find('input').val();
-        $.ajax({
-          url: '{% url 'deletemember' %}',
-          method: 'GET',
-          data: {
-            'username': member,
-            'splitid': {{id}},
-          },
-          success: function(data){
-            $('#members_list').html(data);
-          }
+    {% endif %}
+    <form action="" method="POST" id="addmemberform">
+        {% csrf_token %}
+        <p style="font-weight: bold">Add members to the group:</p>
+        <div class="form-group row" style="margin:0px">
+            <label for="username" class="col-form-label">Username:</label>
+            <div class="col-lg-4">
+                <input type="text" name="username" required class="form-control">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-info">Submit</button>
+    </form>
+    <hr>
+    <h5>Members:</h5>
+    <ul id="members_list" class="list-unstyled">
+        {% for member in members %}
+            <li><input type="text" value="{{member.username}}" name="member" id="member" hidden> {{member.username}} ( {{member.first_name}} {{member.last_name}} )<button id="deletemember"><i class="fas fa-times"></i></button></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'addsplittrans' id %}"><button class="btn btn-dark">Add group transaction</button></a>
+    {% endblock %}
+    {% block script %}
+    <script>
+        $("[id='deletemember']").on('click',function(){
+            var member = $(this).closest('li').find('input').val();
+            $.ajax({
+              url: '{% url 'deletemember' %}',
+              method: 'GET',
+              data: {
+                'username': member,
+                'splitid': {{id}},
+              },
+              success: function(data){
+                $('#members_list').html(data);
+              }
+            })
         })
-    })
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}
+</div>
+

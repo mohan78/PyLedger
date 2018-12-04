@@ -1,21 +1,22 @@
 {% extends 'home/base.html' %}
 {% block body %}
-<div class="">
+<div class="container-fluid" id="addexpense">
   {% if messages %}
     {% for message in messages %}
       {{message}}
     {% endfor %}
   {% endif %}
+  <h4>Add expense</h4>
   <form class="" action="{% url 'addexpense' %}" method="post">
     {% csrf_token %}
-    <div class="">
+    <div class="form-group col-lg-4">
       <label for="datespent">Date</label>
-      <input type="text" name="datespent" value="">
+      <input name="datespent" value="" class="form-control" id="datepicker" autocomplete="off" placeholder="YYYY-MM-DD">
     </div>
     <div class="">
-      <div class="">
+      <div class="form-group col-lg-4">
         <label for="category">Category</label>
-        <select name="category" id="category">
+        <select name="category" id="category" class="form-control">
           <option value="Food">Food</option>
           <option value="Fuel">Fuel</option>
           <option value="Shopping">Shopping</option>
@@ -27,17 +28,17 @@
         <p id="test"></p>
       </div>
     </div>
-    <div class="">
+    <div class="form-group col-lg-4">
       <label for="spentat">Spent at</label>
-      <input type="text" name="spentat" value="">
+      <input type="text" name="spentat" value="" class="form-control" placeholder="Ex: Fuel station name">
     </div>
-    <div class="">
+    <div class="form-group col-lg-4">
       <label for="amount">Amount</label>
-      <input type="text" name="amount" value="">
+      <input type="text" name="amount" value="" class="form-control" placeholder="Rs.">
     </div>
-    <div class="">
+    <div class="form-group col-lg-4">
       <label for="modeofpayment">Mode of Payment</label>
-      <select class="" name="modeofpayment" id="modeofpayment">
+      <select class="form-control" name="modeofpayment" id="modeofpayment">
         <option value="Cash">Cash</option>
         <option value="Debit Card">Debit Card</option>
         <option value="Credit Card">Credit Card</option>
@@ -45,9 +46,8 @@
         <option value="E-Wallets">E-Wallets</option>
       </select>
     </div>
-    <button type="submit" name="button">Submit</button>
+    <button type="submit" name="button" class="btn btn-outline-primary" id="submitexpense">Submit</button>
   </form>
-  <p><a href="{% url 'index' %}">Home</a></p>
 </div>
 {% endblock %}
 {% block script %}
@@ -55,11 +55,15 @@
   $('#category').on('change',function(){
     var category_val = $('#category').val();
     if(category_val == 'Other') {
-      $('#otherinput').html('<label for="category">if other, please specify:</label><input type="text" name="category" value="">');
+      $('#otherinput').html('<div class="form-group col-lg-4"><label for="category">if other, please specify:</label><input type="text" name="category" value="" class="form-control"></div>');
     }
     else {
       $('#otherinput').html();
     }
-  })
+  });
+  $('#datepicker').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'yyyy-mm-dd'
+  });
 </script>
 {% endblock %}
