@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'pyledger.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pyledger',
-        'USER': 'postgres',
-        'PASSWORD': 'Cipher@78',
-        'HOST': 'localhost',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': ''
     }
 }
@@ -134,3 +134,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 
 django_heroku.settings(locals())
+
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
