@@ -1,0 +1,25 @@
+<thead>
+  <th>Date spent</th>
+  <th>Purpose</th>
+  <th>Spent by</th>
+  <th>Spent for</th>
+  <th>Amount</th>
+  <th width="12px">Delete</th>
+</thead>
+<tbody>
+  {% for splittransaction in splittransactions %}
+    <tr>
+      <td hidden id="splittransid">{{splittransaction.id}}</td>
+      <td>{{splittransaction.datespent}}</td>
+      <td>{{splittransaction.spentat}}</td>
+      <td>{{splittransaction.spentby}}</td>
+      <td>{{splittransaction.spentfor}}</td>
+      <td>&#8377 {{splittransaction.amount}}</td>
+      <td>
+        {% if user == splittransaction.spentby %}
+          <button id="deletemember"><i class="fas fa-times"></i></button>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</tbody>

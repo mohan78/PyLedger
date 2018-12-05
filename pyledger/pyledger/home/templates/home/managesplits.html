@@ -11,6 +11,32 @@
         </div>
     {% endfor %}
     {% endif %}
+    <div class="">
+      <h4>Your ledger: </h4>
+      <p>Your total spendings: &#8377 {{totalspendings}}</p>
+      <table class="table table-bordered table-hover" style="max-width: 400px">
+        <thead>
+          <th>Member</th>
+          <th>Pay / Receive</th>
+        </thead>
+        <tbody>
+          {% for key,value in amount.items %}
+            <tr>
+              <td>{{key}}</td>
+              {% load mathfilters %}
+              {% if value < 0 %}
+                <td style="color: red"> &#8377 {{value|abs}}</td>
+              {% else %}
+                <td style="color:green"> &#8377 {{value}}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p><span style="color:red">Red</span>: You have to pay</p>
+      <p><span style="color:green">Green</span> You will receive</p>
+    </div>
+    <hr>
     <form action="" method="POST" id="addmemberform">
         {% csrf_token %}
         <p style="font-weight: bold">Add members to the group:</p>
@@ -50,4 +76,3 @@
     </script>
     {% endblock %}
 </div>
-

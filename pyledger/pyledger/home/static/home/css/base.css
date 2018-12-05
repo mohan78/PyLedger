@@ -7,7 +7,7 @@ body {
 }
 
 .navbar ul li {
-    padding-right: 15px; 
+    padding-right: 15px;
 }
 
 #index h4 {
@@ -44,4 +44,29 @@ body {
     border: none;
     cursor: pointer;
     margin: 0 5px;
+}
+
+#addsplittrans .fas {
+  margin-right: 5px;
+}
+
+#addsplittrans a:hover {
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+#addsplittrans h4 {
+  padding: 10px 0;
+}
+
+#addsplittransform {
+    padding: 0px 0;
+}
+
+#addsplittransform .form-group {
+  padding: 10px 0;
+}
+
+#addsplittransform button, table {
+  margin: 10px 0;
 }

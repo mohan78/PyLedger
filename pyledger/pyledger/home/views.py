@@ -10,10 +10,39 @@ from datetime import datetime
 @login_required
 def index(request):
     user = request.user
-    month = datetime.now().strftime('%m')
+    current_month = datetime.now().strftime('%m')
+    current_year = datetime.now().strftime('%Y')
+    showing_month = datetime.now().strftime('%B, %Y')
     userobj = User.objects.get(username=user.username)
-    this_month_expenses = Expenses.objects.filter(datespent__month=month, username=userobj)
-    context = {'username':user.username,'expenses':this_month_expenses}
+    years = Expenses.objects.dates('datespent','year')
+    years_list = []
+    for year in years:
+        years_list.append(year.strftime('%Y'))
+    if request.method == 'GET':
+        query_year = request.GET.get('year',current_year)
+        query_month = request.GET.get('month',current_month)
+        showing_month = datetime(int(query_year),int(query_month),1).strftime('%B, %Y')
+        query_month_expenses = Expenses.objects.filter(datespent__year=query_year,datespent__month=query_month, username=userobj)
+        query_month_expenses_total = query_month_expenses.aggregate(Sum('amount'))
+        context = {
+            'username':user.username,
+            'expenses':query_month_expenses,
+            'month_total': query_month_expenses_total['amount__sum'],
+            'years_list': years_list,
+            'showing_month': showing_month,
+            'qyear': query_year,
+            'month': int(query_month)
+            }
+        return render(request, 'home/index.html',context)
+    this_month_expenses = Expenses.objects.filter(datespent__month=current_month, username=userobj)
+    this_month_expenses_total = Expenses.objects.filter(datespent__month=current_month, username=userobj).aggregate(Sum('amount'))
+    context = {
+        'username':user.username,
+        'expenses':this_month_expenses,
+        'month_total': this_month_expenses_total['amount__sum'],
+        'years_list': years_list,
+        'showing_month': showing_month
+        }
     return render(request, 'home/index.html',context)
 
 @login_required
@@ -39,6 +68,13 @@ def addexpense(request):
     return render(request, 'home/addexpense.html', context)
 
 @login_required
+def deleteexpense(request):
+    pk = request.GET.get('id')
+    expenseobj = Expenses.objects.get(id=pk).delete()
+    return redirect('index')
+
+
+@login_required
 def createsplit(request):
     user = request.user
     userobj = User.objects.get(username=user.username)
@@ -60,6 +96,23 @@ def createsplit(request):
 def managesplits(request,pk):
     user = request.user
     members = []
+    userobj = User.objects.get(username=user.username)
+    splitobj = Splits.objects.get(id=pk)
+    splitmemberobj = Splitmembers.objects.filter(splitid=splitobj)
+    totalspendings = Splittransactions.objects.filter(splitid=splitobj,spentby_id=userobj.id).aggregate(Sum('amount'))
+    transactions1 = Splittransactions.objects.filter(splitid=splitobj,mode='O')
+    amount_members = {}
+    for member in splitmemberobj:
+        if userobj.id != member.member_id:
+            amount_spentbyuser = transactions1.filter(spentby_id=userobj.id,spentfor_id=member.member_id).aggregate(Sum('amount'))
+            amount_spentforuser = transactions1.filter(spentby_id=member.member_id,spentfor_id=userobj.id).aggregate(Sum('amount'))
+            print(amount_spentbyuser,amount_spentforuser)
+            if amount_spentbyuser['amount__sum'] == None:
+                amount_spentbyuser['amount__sum'] = 0
+            if amount_spentforuser['amount__sum'] == None:
+                amount_spentforuser['amount__sum'] = 0
+            balance = amount_spentbyuser['amount__sum'] - amount_spentforuser['amount__sum']
+            amount_members[member.member] = balance
     splitmemberobj = Splitmembers.objects.filter(splitid=pk)
     for splitmember in splitmemberobj:
         memberobj = User.objects.get(id=splitmember.member.id)
@@ -79,7 +132,8 @@ def managesplits(request,pk):
         obj.save()
         return redirect('managesplits',pk)
     else:
-        context = {'username':user.username,'id':pk,'members':members}
+        context = {'username':user.username,'id':pk,'members':members,'amount': amount_members,
+        'totalspendings':totalspendings['amount__sum']}
         return render(request, 'home/managesplits.html',context=context)
 
 @login_required
@@ -146,3 +200,14 @@ def addsplittrans(request,pk):
         'totalspendings':totalspendings['amount__sum']
         }
     return render(request,'home/addsplittrans.html',context)
+
+@login_required
+def deletesplittrans(request):
+    pk = request.GET.get('id')
+    splitid = request.GET.get('splitid')
+    print(pk,splitid)
+    Splittransactions.objects.get(id=pk).delete()
+    splittransobj = Splittransactions.objects.filter(splitid_id=splitid)
+    context = {'splittransactions':splittransobj}
+    return render(request,'home/deletesplittrans.html',context)
+    

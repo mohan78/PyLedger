@@ -5,34 +5,10 @@
     {{message}}
   {% endfor %}
 {% endif %}
-<div class="container-fluid">
-  <p>Your ledger: </p>
-  <p>Your total spendings: {{totalspendings}}</p>
-  <table class="table table-bordered table-hover" style="max-width: 400px">
-    <thead>
-      <th>Member</th>
-      <th>Pay / Receive</th>
-    </thead>
-    <tbody>
-      {% for key,value in amount.items %}
-        <tr>
-          <td>{{key}}</td>
-          {% load mathfilters %}
-          {% if value < 0 %}
-            <td style="color: red">{{value|abs}}</td>
-          {% else %}
-            <td style="color:green">{{value}}</td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <p><span style="color:red">Red</span>: You have to pay</p>
-  <p><span style="color:green">Green</span> You will receive</p>
-  <hr>
-  <a href="{% url 'managesplits' id %}"><i class="fas fa-arrow-circle-left fa-2x"></i>Manage group</a>
+<div class="container-fluid" id="addsplittrans">
+  <a href="{% url 'managesplits' id %}"><i class="fas fa-arrow-circle-left fa-1x"></i>Manage group</a>
   <h4>Add transaction:</h4>
-  <form class="" action="" method="post">
+  <form class="" action="" method="post" id="addsplittransform">
     {% csrf_token %}
     <div class="form-group row" style="margin:0">
       <label for="purpose" class="col-form-label">Purpose</label>
@@ -56,28 +32,53 @@
         {% endfor %}
     </div>
     <button type="submit" class="btn btn-success">Add</button>
-    
+
   </form>
-  <table class="table table-bordered">
+  <h4>Transactions history:</h4>
+  <table class="table table-bordered" id="splittranstable">
     <thead>
       <th>Date spent</th>
       <th>Purpose</th>
       <th>Spent by</th>
       <th>Spent for</th>
       <th>Amount</th>
+      <th width="12px">Delete</th>
     </thead>
     <tbody>
       {% for splittransaction in splittransactions %}
         <tr>
+          <td hidden id="splittransid">{{splittransaction.id}}</td>
           <td>{{splittransaction.datespent}}</td>
           <td>{{splittransaction.spentat}}</td>
           <td>{{splittransaction.spentby}}</td>
           <td>{{splittransaction.spentfor}}</td>
-          <td>{{splittransaction.amount}}</td>
+          <td>&#8377 {{splittransaction.amount}}</td>
+          <td>
+            {% if user == splittransaction.spentby %}
+              <button id="deletemember"><i class="fas fa-times"></i></button>
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-
+{% endblock %}
+{% block script %}
+<script>
+    $("[id='deletemember']").on('click',function(){
+        var splittransid = $(this).closest('tr').find('#splittransid').text();
+        $.ajax({
+          url: '{% url 'deletesplittrans' %}',
+          method: 'GET',
+          data: {
+            'id': splittransid,
+            'splitid': {{id}}
+          },
+          success: function(data){
+            $('#splittranstable').html(data)
+          }
+        });
+    })
+</script>
 {% endblock %}

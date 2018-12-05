@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'pyledger.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pyledger',
+        'NAME': 'pyledger2',
         'USER': 'postgres',
-        'PASSWORD': 'Cipher@78',
+        'PASSWORD': '1397',
         'HOST': 'localhost',
         'PORT': ''
     }

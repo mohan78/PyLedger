@@ -1,49 +1,68 @@
 {% extends 'registration/authbase.html' %}
 {% block body %}
-{% if messages %}
-  {% for message in messages %}
-    {{message}}
-  {% endfor %}
-{% endif %}
-<form class="" action="{% url 'signup' %}" method="post">
-  {% csrf_token %}
-  <p id="message"></p>
-  <div class="">
-    <label for="username">Username</label>
-    <input type="text" name="username" value="" required>
+<div class="container-fluid">
+  <div class="card">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <div class="card-header">
+      <h4 class="text-center">PyLedger - Signup</h4>
+    </div>
+    <div class="card-body">
+      <form class="" action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+        <p id="message"></p>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" value="" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" value="" class="form-control" id="password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmpassword">Confirm Password</label>
+          <input type="password" name="confirmpassword" value="" class="form-control" id="confirmpassword" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" name="email" value="" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="firstname">First name</label>
+          <input type="text" name="firstname" value="" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="lastname">Last name</label>
+          <input type="text" name="lastname" value="" class="form-control" required>
+        </div>
+        <p>By signing up, you agree to our terms and conditions which will be updated later.</p>
+        <button type="submit" name="button" id="submit" class="btn btn-success" disabled>Submit</button>
+      </form>
+    </div>
+    <div class="card-footer">
+        <p>If you already have an account, please <a href="{% url 'login' %}">Login</a></p>
+    </div>
   </div>
-  <div class="">
-    <label for="password">Password</label>
-    <input type="password" name="password" value="" id="password" required>
-  </div>
-  <div class="">
-    <label for="confirmpassword">Confirm Password</label>
-    <input type="password" name="confirmpassword" value="" id="confirmpassword" required>
-  </div>
-  <div class="">
-    <label for="email">Email</label>
-    <input type="text" name="email" value="" required>
-  </div>
-  <div class="">
-    <label for="firstname">First name</label>
-    <input type="text" name="firstname" value="" required>
-  </div>
-  <div class="">
-    <label for="lastname">Last name</label>
-    <input type="text" name="lastname" value="" required>
-  </div>
-  <p>By signing up, you agree to our terms and conditions which will be updated later.</p>
-  <button type="submit" name="button" id="submit" disabled>Submit</button>
-</form>
-<p>If you already have an account, please <a href="{% url 'login' %}">Login</a></p>
+</div>
+
 {% endblock %}
 {% block script %}
 <script>
-  $('#confirmpassword').on('change',function(){
+  $('#confirmpassword').on('keyup',function(){
     var pass = $('#password').val();
     var cfnpass = $('#confirmpassword').val();
     if (pass !== cfnpass){
-      $('#message').html("Passwords don't match");
+      $('#message').html("<p style='color:red'>Passwords don't match</p>");
+      $('#message').show();
+      $('#submit').prop("disabled",true);
     }
     else {
       $('#message').hide();
