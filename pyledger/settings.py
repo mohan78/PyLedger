@@ -26,7 +26,7 @@ SECRET_KEY = '*2f#5jgel+33e6-5)6()kndv9l$sih6(*=lfhd+8$@92_z8aw3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['salty-taiga-99874.herokuapp.com','localhost','0.0.0.0']
 
 
 # Application definition
