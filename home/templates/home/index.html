@@ -1,0 +1,82 @@
+{% extends 'home/base.html' %}
+{% block body %}
+<div class="container-fluid" id="index">
+  <div class="">
+    <h5>Filter transactions</h5>
+    <form class="form-inline" action="{% url 'index' %}" method="get">
+      <div class="form-row" style="margin:0">
+        <label for="year" class="col-form-label">Year</label>
+        <div class="col-lg-2">
+          <select class="form-control" name="year">
+            {% for year in years_list %}
+              <option value="{{year}}" {% if qyear == year %} selected {% endif %}>{{year}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin:0">
+        <label for="month" class="col-form-label">Month</label>
+        <div class="col-lg-2">
+          <select class="form-control" name="month">
+            <option value="1" {% if month == 1 %} selected {% endif %}>Januray</option>
+            <option value="2" {% if month == 2 %} selected {% endif %}>February</option>
+            <option value="3" {% if month == 3 %} selected {% endif %}>March</option>
+            <option value="4" {% if month == 4 %} selected {% endif %}>April</option>
+            <option value="5" {% if month == 5 %} selected {% endif %}>May</option>
+            <option value="6" {% if month == 6 %} selected {% endif %}>June</option>
+            <option value="7" {% if month == 7 %} selected {% endif %}>July</option>
+            <option value="8" {% if month == 8 %} selected {% endif %}>August</option>
+            <option value="9" {% if month == 9 %} selected {% endif %}>September</option>
+            <option value="10" {% if month == 10 %} selected {% endif %}>October</option>
+            <option value="11" {% if month == 11 %} selected {% endif %}>November</option>
+            <option value="12" {% if month == 12 %} selected {% endif %}>December</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" name="filtertransactions" class="btn btn-outline-primary">Filter</button>
+    </form>
+
+  </div>
+  <h4>{{showing_month}} expenses:</h4>
+  <p>Total spendings: &#8377 {{month_total}}</p>
+  <table class="table table-bordered" id="expensetable">
+    <thead>
+      <th>Spent at</th>
+      <th>Category</th>
+      <th>Date</th>
+      <th>Amount</th>
+      <th width="12px">Delete</th>
+    </thead>
+    <tbody>
+      {% for expense in expenses %}
+      <tr>
+        <td hidden id="expenseid">{{expense.id}}</td>
+        <td>{{expense.spentat}}</td>
+        <td>{{expense.category}}</td>
+        <td>{{expense.datespent}}</td>
+        <td>&#8377 {{expense.amount}}</td>
+        <td><button id="deletemember"><i class="fas fa-times"></i></button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $("[id='deletemember']").on('click',function(){
+      confirm("Confirm you want to delete?");
+        var expenseid = $(this).closest('tr').find('#expenseid').text();
+        $.ajax({
+          url: '{% url 'deleteexpense' %}',
+          method: 'GET',
+          data: {
+            'id': expenseid
+          },
+          success: function(data){
+            location.reload()
+          }
+        });
+    })
+</script>
+{% endblock %}
