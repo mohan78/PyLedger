@@ -72,6 +72,7 @@
 {% block script %}
 <script>
     $("[id='deletemember']").on('click',function(){
+      if (confirm("Confirm do you want to delete the transaction?")){
         var splittransid = $(this).closest('tr').find('#splittransid').text();
         $.ajax({
           url: '{% url 'deletesplittrans' %}',
@@ -84,6 +85,7 @@
             $('#splittranstable').html(data)
           }
         });
+      } 
     })
 </script>
 {% endblock %}
